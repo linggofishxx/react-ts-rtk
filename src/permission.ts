@@ -3,20 +3,13 @@
  * @Author: 王广徽
  * @Date: 2022-10-13 19:04:17
  * @LastEditors: 王广徽
- * @LastEditTime: 2022-10-14 19:58:02
+ * @LastEditTime: 2022-11-15 19:25:20
  */
 
-import routes, { RouteProp } from './router/index';
+import { RouteProp } from './router/index';
 import React from 'react';
 
 const ErrorPage404 = React.lazy(() => import('./views/error-pages/404/index'))
-const view_modules = import.meta.glob('./views/**/**.tsx');
-const layout_modules = import.meta.glob('./layouts/**/**.tsx');
-console.log('==================view_modules=================', view_modules)
-console.log('==================layout_modules=================', layout_modules)
-const getViewUrl = (url: string) => `./views/${url}/index.tsx`;
-const getLayoutUrl = (url: string) => `./layouts/${url}/index.tsx`;
-
 const getView = (url: string) => React.lazy(() => import(`"./views/${url}/index"`));
 const getLayout = (url: string) => React.lazy(() => import(`"./layouts/${url}/index"`));
 
@@ -24,8 +17,8 @@ const getLayout = (url: string) => React.lazy(() => import(`"./layouts/${url}/in
 export function generateRoutes(routes: RouteProp[]) {
   const newRoutes = generateAsyncRoutes(routes);
   const addRoutes = generateLevel2Routes(newRoutes);
-  console.log('=================newRoutes===================', newRoutes);
-  console.log('=================addRoutes===================', addRoutes);
+  console.log('==============newRoutes================', newRoutes);
+  console.log('==============addRoutes================', addRoutes);
   return { newRoutes, addRoutes }
 }
 

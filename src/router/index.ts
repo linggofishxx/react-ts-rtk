@@ -3,7 +3,7 @@
  * @Author: 王广徽
  * @Date: 2022-09-14 19:50:57
  * @LastEditors: 王广徽
- * @LastEditTime: 2022-10-14 18:59:37
+ * @LastEditTime: 2022-11-15 20:32:18
  */
 
 /* import login from "../views/login";
@@ -28,6 +28,7 @@ const routes: RouteProp[] = [
     path: '/home',
     name: 'home',
     component: '@Default',
+    redirect: 'home/home',
     children: [
       {
         path: 'home',
@@ -70,7 +71,7 @@ const routes: RouteProp[] = [
          },
           {
             path: 'table-finance-tax',
-            name: '工资报表',
+            name: '工资税额报表',
             component: 'statistic-analysis/table-finance/table-finance-tax',
           }
         ]

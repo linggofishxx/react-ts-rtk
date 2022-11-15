@@ -3,50 +3,55 @@
  * @Author: 王广徽
  * @Date: 2022-09-16 19:01:50
  * @LastEditors: 王广徽
- * @LastEditTime: 2022-10-14 19:02:32
+ * @LastEditTime: 2022-11-15 20:28:09
  */
-import { Routes, Route, useRoutes } from "react-router-dom";
-import routes, { RouteProp } from './index';
+import React from 'react';
+import { Routes, Route } from "react-router-dom";
+import routes from './index';
 import { generateRoutes as generateRoutesFun } from '../permission';
-import { setRoutes } from '../store/permission';
-import { useDispatch, useSelector } from "react-redux";
+import { setAddRoutes, setRoutes } from '../store/permission';
+import { useDispatch } from "react-redux";
+import Default from '../layouts/Default';
 
-export default function AllRoutes() {
+const getView = (url: string) => React.lazy(() => import(`../views/${url}`));
+
+export default function GetAllRoutes() {
   const dispatch = useDispatch();
   const cloneRoutes = JSON.parse(JSON.stringify(routes));
   let { newRoutes, addRoutes } = generateRoutesFun(cloneRoutes);
-  console.log('==========addRoutes >>>>>>>=============', addRoutes)
-
-  const elements = useRoutes(addRoutes);
-  /* const generateRoutes = (routeList: any[]) => {
-    return routeList.map((_route: any) => {
-      let component1 = _route.component;
-      console.log('====================component type======================', _route, typeof component1);
-      let elements: any = [];
-      if (_route.children && _route.children.length > 0) {
-        elements = _route.children.map((item: any) => (
-          <Route key={item.name} path={item.path} element={(item.component)()}></Route>
-        ))
-      }
-      return elements && elements.length > 0 ? (
-        <Route
-          key={_route.name}
-          path={_route.path}
-          element={component1()}>
-          {
-            elements
-          }
-        </Route>
-      ) :
-        (<Route
-          key={_route.name}
-          path={_route.path}
-          element={component1()}>
-        </Route>)
-    })
-  }
-  const allRoutes = useMemo(() => generateRoutes(addRoutes), [addRoutes]);
-
-  console.log('======================allRoutes===================', allRoutes); */
-  return elements;
+  dispatch(setAddRoutes(addRoutes));
+  dispatch(setRoutes(newRoutes));
+  console.log('==========newRoutes==========', newRoutes)
+  return (<Routes>
+    {
+      addRoutes.map((_route: any) => {
+        let elements: any = [];
+        if (_route.children && _route.children.length > 0) {
+          elements = _route.children.map((item: any) => {
+            let Component = getView(item.component);
+            console.log('==================item.component===================', item.component)
+            console.log('==================item.component===================', Component)
+            return (
+              <Route key={item.name} path={item.path} element={
+                <React.Suspense fallback={<>...</>}>
+                  <Component />
+                </React.Suspense>
+              }></Route>
+            )
+          })
+        }
+        return (
+          <Route
+            key={_route.name}
+            path={_route.path}
+            element={<Default />}>
+            {
+              elements
+            }
+          </Route>
+        )
+      })
+    }
+  </Routes>);
+  // return elements;
 }

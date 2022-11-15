@@ -3,28 +3,19 @@
  * @Author: 王广徽
  * @Date: 2022-09-15 17:02:09
  * @LastEditors: 王广徽
- * @LastEditTime: 2022-09-21 19:58:42
+ * @LastEditTime: 2022-11-15 19:39:56
  */
 import routes from "../../router";
 import NavItem from './NavItem';
 import './NavBar.scss';
+import { useSelector } from "react-redux";
 
 export default function NavBar() {
-  const navRouteList = routes.find((route: any) => /^\/default/.test(route.path))?.children ?? [];
-  generateRealRouteList(navRouteList, '/default');
-  function generateRealRouteList(routes: any[], parentPath?: string) {
-    routes.forEach((route: any) => {
-      route.realPath = parentPath ? parentPath + '/' + route.path : route.path;
-      if (route.children && route.children.length > 0) {
-        generateRealRouteList(route.children, route.realPath)
-      }
-    })
-  }
-  console.log('===============realRoutes=========================', navRouteList)
+  const routes = useSelector((state: any) => state.permission.routes);
   return (
     <div className="nav_list">
       {
-        navRouteList.map((route: any) => (
+        routes.map((route: any) => (
           <NavItem key={route.path} to={route.realPath} name={route.name} children={route.children}></NavItem>
         ))
       }

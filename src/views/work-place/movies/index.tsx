@@ -3,26 +3,38 @@
  * @Author: 王广徽
  * @Date: 2022-09-16 17:02:25
  * @LastEditors: 王广徽
- * @LastEditTime: 2022-11-16 17:29:08
+ * @LastEditTime: 2022-11-17 20:39:28
  */
 import { getMovieData } from '@/store/movieSlice';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { movieSelectors } from '@/store/movieSlice';
+import store from '@/store';
 import { Button } from 'antd';
 
 export default function Movies() {
-  useEffect(() => getMovieData())
-  function getDaft() {
-    console.log('==============getMovieData=============', getMovieData)
-    getMovieData();
-  }
+  const { selectById } = movieSelectors;
+  const [realMovies, setRealMovies] = useState<any[]>([])
+  const dispatch = useDispatch();
   const movies = useSelector((state: any) => state.movie.list);
+  useEffect(() => {
+    dispatch(getMovieData());
+  }, []);
+  useEffect(() => {
+    setRealMovies(movies)
+  }, [movies])
+
+  const changeMovie = () => {
+    let movie = selectById(store.getState(), '794088300');
+    console.log('=fadsfasdfsd==================', movie)
+    setRealMovies([movie])
+  }
   return (
     <div>
-      <Button onClick={() => getDaft()}  >click</Button>
+      <Button type="primary" onClick={() => changeMovie()}>点击</Button>
       <ul>
         {
-          movies.map((movie: any) => (
-            <li>{movie.name}</li>
+          realMovies.map((movie: any) => (
+            <li key={movie.name}>{movie.name}</li>
           ))
         }
       </ul>

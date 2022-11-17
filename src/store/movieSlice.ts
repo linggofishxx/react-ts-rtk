@@ -3,23 +3,29 @@
  * @Author: 王广徽
  * @Date: 2022-09-15 13:31:13
  * @LastEditors: 王广徽
- * @LastEditTime: 2022-09-15 14:07:10
+ * @LastEditTime: 2022-11-17 20:03:33
  */
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
 
+interface Movie {
+  name: string;
+  tvId: string | number;
+}
 export interface MovieState {
-  list: any[];
+  list: Movie[];
   totals: number;
 }
 
-const initialState: MovieState = {
+const movieAdapter = createEntityAdapter<Movie>({
+  selectId: movie => movie.tvId
+});
+
+export const movieSelectors = movieAdapter.getSelectors((state: any) => state.movie)
+
+const initialState = movieAdapter.getInitialState<MovieState>({
   list: [],
   totals: 0
-}
-
-/* const getMovieListApi = () => {
-  fetch('https://pcw-api.iqiyi.com/search/recommend/list?channel_id=1&data_type=1&mode=24&page_id=1&ret_num=48').then((res: any) => res.json());
-} */
+})
 
 const getMovieListApi = () =>
   fetch(
@@ -28,6 +34,7 @@ const getMovieListApi = () =>
 
 export const getMovieData: any = createAsyncThunk('movie/getMovie',
   async () => {
+    console.log('=====================getMovie========================')
     const res: any = await getMovieListApi();
     return res;
   });
@@ -48,8 +55,10 @@ export const movieSlice = createSlice({
       })
       .addCase(getMovieData.fulfilled, (state, action) => {
         console.log("🚀 ~ fulfilled");
-        state.list = action.payload.data.list;
-        state.totals = action.payload.data.list?.length ?? 0;
+        const { list } = action.payload.data;
+        movieAdapter.setAll(state, action.payload.data.list)
+        state.totals = list?.length ?? 0;
+        state.list = list ?? [];
       })
       .addCase(getMovieData.rejected, (state, err) => {
         console.log("🚀 ~ rejected", err)

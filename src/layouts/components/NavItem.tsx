@@ -3,7 +3,7 @@
  * @Author: 王广徽
  * @Date: 2022-09-15 17:21:49
  * @LastEditors: 王广徽
- * @LastEditTime: 2022-09-21 20:04:06
+ * @LastEditTime: 2022-11-16 16:18:41
  */
 import { NavLink, useNavigate, useParams, useRoutes, Router, useLocation } from 'react-router-dom';
 import './NavItem.scss'
@@ -21,12 +21,12 @@ export default function NavItem(props: any) {
       return;
     } */
     navigate(props.to);
+    props.onGetSelectNavItem && props.onGetSelectNavItem(props.to);
     dispatch(setSliderRoutes(props.children as RouteProp))
   };
   return (
-    <div className='nav_item' onClick={navItemClick}>
+    <i className='nav_item' onClick={navItemClick}>
       <span className="nav_span">{props.name}</span>
-      {/* <NavLink key={props.key} to={props.to} >{props.name}</NavLink> */}
-    </div>
+    </i>
   )
 }

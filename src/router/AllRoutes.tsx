@@ -3,7 +3,7 @@
  * @Author: 王广徽
  * @Date: 2022-09-16 19:01:50
  * @LastEditors: 王广徽
- * @LastEditTime: 2022-11-15 20:28:09
+ * @LastEditTime: 2022-11-16 10:45:32
  */
 import React from 'react';
 import { Routes, Route } from "react-router-dom";
@@ -11,6 +11,7 @@ import routes from './index';
 import { generateRoutes as generateRoutesFun } from '../permission';
 import { setAddRoutes, setRoutes } from '../store/permission';
 import { useDispatch } from "react-redux";
+import home from '../views/home/home';
 import Default from '../layouts/Default';
 
 const getView = (url: string) => React.lazy(() => import(`../views/${url}`));
@@ -32,7 +33,7 @@ export default function GetAllRoutes() {
             console.log('==================item.component===================', item.component)
             console.log('==================item.component===================', Component)
             return (
-              <Route key={item.name} path={item.path} element={
+              <Route key={item.name} path={item.realPath} element={
                 <React.Suspense fallback={<>...</>}>
                   <Component />
                 </React.Suspense>

@@ -3,7 +3,7 @@
  * @Author: 王广徽
  * @Date: 2022-09-14 14:18:45
  * @LastEditors: 王广徽
- * @LastEditTime: 2022-09-16 14:01:10
+ * @LastEditTime: 2022-11-16 17:26:30
  */
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
@@ -68,9 +68,12 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '~': `${path.resolve(__dirname)}`,
+      '~/': `${path.resolve(__dirname, 'src')}/`,
       '@': path.resolve(__dirname, 'src'),
       '@components': path.resolve(__dirname, 'src/components'),
+      '@views': path.resolve(__dirname, 'src/views'),
+      '@utils': path.resolve(__dirname, 'src/utils')
+      // vue: 'vue/dist/vue.esm-bundler.js'
     }
-  }
+  },
 })

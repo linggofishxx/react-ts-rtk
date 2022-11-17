@@ -3,7 +3,7 @@
  * @Author: 王广徽
  * @Date: 2022-09-14 19:47:37
  * @LastEditors: 王广徽
- * @LastEditTime: 2022-09-21 15:16:40
+ * @LastEditTime: 2022-11-16 15:37:02
  */
 import { Layout } from 'antd';
 import { Outlet } from 'react-router-dom';
@@ -16,8 +16,8 @@ export default function Default() {
   return (
     <Layout>
       <Sider><SliderBar /></Sider>
-      <Layout style={{ marginLeft: '4px' }}>
-        <Header><NavBar /></Header>
+      <Layout>
+        <Header style={{ backgroundColor: '#34393e' }}><NavBar /></Header>
         <Content>
           <Outlet />
         </Content>
